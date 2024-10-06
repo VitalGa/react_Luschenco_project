@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import env from '../env.json';
 
-const Create = () => {
+function Create() {
   const [url, setUrl] = useState('');
-  const [lineClass, setLineClass] = useState('hide'); //скрываем
-  const [formClass, setFormClass] = useState(''); //скрываем
+  const [lineClass, setLineClass] = useState('hide'); // скрываем
+  const [formClass, setFormClass] = useState(''); // скрываем
+
   let sendData = (obj) => {
     setFormClass('hide');
     setLineClass('');
@@ -23,12 +25,13 @@ const Create = () => {
         }
       });
   };
+
   let loadDataFromForm = (event) => {
     event.preventDefault();
     let note = event.target.elements.note.value;
     note = note.trim();
     if (note === '') {
-      alert('Заметка не может быть пустой');
+      alert('Заполните поля');
       return false;
     }
     sendData({ note: note });
@@ -38,7 +41,7 @@ const Create = () => {
     <div>
       <form onSubmit={loadDataFromForm} className={formClass}>
         <label htmlFor=''>Введите заметку</label>
-        <textarea name='note' id='note' defaultValue='test'></textarea>
+        <textarea name='note' id='note' defaultValue='Test'></textarea>
         <button type='submit'>Создать</button>
       </form>
       <div className={lineClass}>
@@ -48,12 +51,12 @@ const Create = () => {
             onClick={function () {
               window.location.reload();
             }}>
-            Создать новую заметку
+            Cоздать новую заметку
           </button>
         </div>
       </div>
     </div>
   );
-};
+}
 
 export default Create;

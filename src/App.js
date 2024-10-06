@@ -18,6 +18,7 @@ function App() {
           <Route path='/create' element={<Create />} />
           <Route path='/note' element={<Note />} />
           <Route path='/note/:noteURL' element={<Note />} />
+          <Route path='*' element={<Error />} />
         </Routes>
         <Footer></Footer>
       </Router>

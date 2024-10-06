@@ -1,17 +1,20 @@
-// http://localhost:3000/note/vh1r7doxe1t4glu5rcbdptvi
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import env from '../env.json';
 
-const Note = () => {
+function Note() {
   let { noteURL } = useParams();
-  const [noteState, setNoteState] = useState('');
-  const [lineClass, setLineClass] = useState('hide');
-  const [formClass, setFormClass] = useState('hide');
-  const [errorClass, setErrorClass] = useState('hide');
+  const [noteText, setNoteText] = useState('');
+  const [showNote, setShowNote] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const [showError, setShowError] = useState(false);
+
+  console.log('Note URL:', noteURL);
 
   useEffect(() => {
     if (noteURL !== undefined) {
+      console.log('Fetching note from:', env.urlBackend);
+
       fetch(env.urlBackend, {
         method: 'POST',
         headers: {
@@ -21,24 +24,32 @@ const Note = () => {
       })
         .then((response) => response.json())
         .then((response) => {
-          console.log(response);
+          console.log('Response:', response);
           if (response.result) {
-            setNoteState(response.note);
-            setLineClass('');
-            setFormClass('hide');
-            setErrorClass('hide');
+            setNoteText(response.note);
+            setShowNote(true); // Показываем заметку
+            setShowForm(false); // Скрываем форму
+            setShowError(false); // Скрываем ошибку
           } else {
-            setLineClass('hide');
-            setFormClass('');
-            setErrorClass('');
+            console.log('Note not found');
+            setShowNote(false); // Скрываем заметку
+            setShowForm(false); // Скрываем форму
+            setShowError(true); // Показываем ошибку
           }
+        })
+        .catch((error) => {
+          console.log('Error fetching note:', error);
+          setShowNote(false);
+          setShowForm(false);
+          setShowError(true); // Показываем ошибку в случае проблемы с запросом
         });
     } else {
-      setLineClass('hide');
-      setFormClass('');
-      setErrorClass('');
+      console.log('Note URL is undefined');
+      setShowNote(false); // Скрываем заметку
+      setShowForm(true); // Показываем форму
+      setShowError(false); // Скрываем ошибку
     }
-  }, []);
+  }, [noteURL]);
 
   function getNote(event) {
     event.preventDefault();
@@ -48,27 +59,37 @@ const Note = () => {
       alert('Заполните поля');
       return false;
     }
-    noteURL = url;
     window.location.href = env.url + '/' + url;
   }
 
   return (
     <div>
-      <div className={lineClass}>
-        <h4>Note:</h4>
-        <div>{noteState}</div>
-      </div>
-      <div className={errorClass}></div>
-      <div className={formClass}>
-        <form action='' onSubmit={getNote}>
-          <input type='text' name='url' className='form-control' />
-          <button type='submit' className='btn btn-primary'>
-            Искать Note
-          </button>
-        </form>
-      </div>
+      {showNote ? (
+        <div>
+          <h4>Note:</h4>
+          <div>{noteText}</div>
+        </div>
+      ) : null}
+
+      {showError ? (
+        <div>
+          <p>Произошла ошибка. Такой note не найден!!!</p>
+        </div>
+      ) : null}
+
+      {showForm ? (
+        <div>
+          <form onSubmit={getNote}>
+            <label htmlFor='url'>Введите hash заметки</label>
+            <input type='text' name='url' id='url' className='form-control' />
+            <button type='submit' className='btn btn-primary'>
+              Искать Note
+            </button>
+          </form>
+        </div>
+      ) : null}
     </div>
   );
-};
+}
 
 export default Note;
