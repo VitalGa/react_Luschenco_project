@@ -1,11 +1,10 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import env from '../env.json';
 
 function Create() {
   const [url, setUrl] = useState('');
-  const [lineClass, setLineClass] = useState('hide'); // скрываем
-  const [formClass, setFormClass] = useState(''); // скрываем
+  const [lineClass, setLineClass] = useState('hide');
+  const [formClass, setFormClass] = useState('');
 
   let sendData = (obj) => {
     setFormClass('hide');
@@ -19,7 +18,6 @@ function Create() {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         if (response.result) {
           setUrl(env.url + '/' + response.url);
         }
@@ -38,20 +36,23 @@ function Create() {
   };
 
   return (
-    <div>
+    <div className='container mt-4'>
       <form onSubmit={loadDataFromForm} className={formClass}>
         <label htmlFor=''>Введите заметку</label>
-        <textarea name='note' id='note' defaultValue='Test'></textarea>
-        <button type='submit'>Создать</button>
+        <textarea
+          name='note'
+          id='note'
+          defaultValue='Test'
+          className='form-control mt-2'></textarea>
+        <button type='submit' className='btn btn-success mt-2'>
+          Создать
+        </button>
       </form>
       <div className={lineClass}>
         <div>{url}</div>
         <div>
-          <button
-            onClick={function () {
-              window.location.reload();
-            }}>
-            Cоздать новую заметку
+          <button className='btn btn-secondary mt-2' onClick={() => window.location.reload()}>
+            Создать новую заметку
           </button>
         </div>
       </div>

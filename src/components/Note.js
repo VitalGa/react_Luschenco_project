@@ -9,12 +9,8 @@ function Note() {
   const [showForm, setShowForm] = useState(true);
   const [showError, setShowError] = useState(false);
 
-  console.log('Note URL:', noteURL);
-
   useEffect(() => {
     if (noteURL !== undefined) {
-      console.log('Fetching note from:', env.urlBackend);
-
       fetch(env.urlBackend, {
         method: 'POST',
         headers: {
@@ -24,30 +20,26 @@ function Note() {
       })
         .then((response) => response.json())
         .then((response) => {
-          console.log('Response:', response);
           if (response.result) {
             setNoteText(response.note);
-            setShowNote(true); // Показываем заметку
-            setShowForm(false); // Скрываем форму
-            setShowError(false); // Скрываем ошибку
+            setShowNote(true);
+            setShowForm(false);
+            setShowError(false);
           } else {
-            console.log('Note not found');
-            setShowNote(false); // Скрываем заметку
-            setShowForm(false); // Скрываем форму
-            setShowError(true); // Показываем ошибку
+            setShowNote(false);
+            setShowForm(false);
+            setShowError(true);
           }
         })
         .catch((error) => {
-          console.log('Error fetching note:', error);
           setShowNote(false);
           setShowForm(false);
-          setShowError(true); // Показываем ошибку в случае проблемы с запросом
+          setShowError(true);
         });
     } else {
-      console.log('Note URL is undefined');
-      setShowNote(false); // Скрываем заметку
-      setShowForm(true); // Показываем форму
-      setShowError(false); // Скрываем ошибку
+      setShowNote(false);
+      setShowForm(true);
+      setShowError(false);
     }
   }, [noteURL]);
 
@@ -67,29 +59,29 @@ function Note() {
   }
 
   return (
-    <div>
+    <div className='container mt-4'>
       {showNote ? (
         <div>
           <h4>Note:</h4>
           <div>{noteText}</div>
           <div>
-            <button onClick={searchNote}>Смотреть еще один Note</button>
+            <button className='btn btn-secondary mt-2' onClick={searchNote}>
+              Смотреть еще один Note
+            </button>
           </div>
         </div>
       ) : null}
 
       {showError ? (
-        <div>
-          <p>Произошла ошибка. Такой note не найден!!!</p>
-        </div>
+        <div className='alert alert-danger mt-2'>Произошла ошибка. Такой note не найден!!!</div>
       ) : null}
 
       {showForm ? (
         <div>
           <form onSubmit={getNote}>
             <label htmlFor='url'>Введите hash заметки</label>
-            <input type='text' name='url' id='url' className='form-control' />
-            <button type='submit' className='btn btn-primary'>
+            <input type='text' name='url' id='url' className='form-control mt-2' />
+            <button type='submit' className='btn btn-primary mt-2'>
               Искать Note
             </button>
           </form>
