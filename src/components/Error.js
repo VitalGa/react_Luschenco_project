@@ -1,5 +1,5 @@
 const Error = () => {
-  return <div></div>;
+  return <div>Такого адреса нет.</div>;
 };
 
 export default Error;

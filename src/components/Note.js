@@ -62,12 +62,19 @@ function Note() {
     window.location.href = env.url + '/' + url;
   }
 
+  function searchNote() {
+    window.location.href = env.url;
+  }
+
   return (
     <div>
       {showNote ? (
         <div>
           <h4>Note:</h4>
           <div>{noteText}</div>
+          <div>
+            <button onClick={searchNote}>Смотреть еще один Note</button>
+          </div>
         </div>
       ) : null}
 
