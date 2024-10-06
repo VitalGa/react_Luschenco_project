@@ -1,5 +1,9 @@
 const Error = () => {
-  return <div>Такого адреса нет</div>;
+  return (
+    <div className='text-center mt-4'>
+      <div className='alert alert-danger'>Такого адреса нет</div>
+    </div>
+  );
 };
 
 export default Error;

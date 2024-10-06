@@ -32,6 +32,7 @@ function Note() {
           }
         })
         .catch((error) => {
+          console.error('Error fetching note:', error); // Логирование ошибки
           setShowNote(false);
           setShowForm(false);
           setShowError(true);

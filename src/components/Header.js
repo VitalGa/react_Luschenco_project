@@ -5,7 +5,9 @@ const Header = () => {
   return (
     <nav className='navbar navbar-expand-lg navbar-light bg-light'>
       <div className='container-fluid'>
-        <ul className='navbar-nav'>
+        <ul className='navbar-nav' style={{ marginLeft: '40px' }}>
+          {' '}
+          {/* Отступ слева */}
           <li className='nav-item'>
             <NavLink
               to='/'
